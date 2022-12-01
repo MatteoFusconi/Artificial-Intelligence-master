@@ -34,7 +34,7 @@ def GD(f, grad_f, x0, alpha, kmax, tolf, tolx):
     
     return x, k, f_val, grads, err
 
-def backtracking(f, grad_f, x):
+def backtracking(f, grad_f, x, alphastart= 1):
     """
     This function is a simple implementation of the backtracking algorithm for
     the GD (Gradient Descent) method.
@@ -43,7 +43,7 @@ def backtracking(f, grad_f, x):
     grad_f: function. The gradient of f(x).
     x: ndarray. The actual iterate x_k.
     """
-    alpha = 1
+    alpha = alphastart
     c = 0.8
     tau = 0.25
     
@@ -54,7 +54,7 @@ def backtracking(f, grad_f, x):
             break
     return alpha
 
-def GD_b(f, grad_f, x0, kmax = 100, tolf = 1e-4, tolx = 1e-4):
+def GD_b(f, grad_f, x0, kmax = 100, tolf = 1e-4, tolx = 1e-4, alphastart= 1):
     x = np.zeros((kmax + 1, x0.shape[0])) # righe = x_k, colonne: componenti degli x_k 
     f_val = np.zeros((kmax + 1,))
     grads = np.zeros((kmax + 1, x0.shape[0]))
@@ -68,7 +68,7 @@ def GD_b(f, grad_f, x0, kmax = 100, tolf = 1e-4, tolx = 1e-4):
     
     while(True):
         # new step
-        alpha = backtracking(f, grad_f, x[k-1])
+        alpha = backtracking(f, grad_f, x[k-1], alphastart)
         x[k] = x[k-1] - alpha*grads[k-1]
         f_val[k] = f(x[k])
         grads[k] = grad_f(x[k])
